@@ -51,10 +51,10 @@ export function Hero() {
             </div>
           </div>
           
-          <div className="flex justify-center lg:justify-end">
-            <div className="relative">
+          <div className="flex justify-center lg:justify-end mt-8 md:mt-0">
+            <div className="relative w-full max-w-sm md:max-w-md">
               <div className="absolute inset-0 bg-[var(--color-primary)] opacity-10 blur-3xl rounded-full"></div>
-              <div className="relative bg-white rounded-lg shadow-2xl p-8 max-w-md">
+              <div className="relative bg-white rounded-lg shadow-2xl p-6 md:p-8">
                 <div className="aspect-[3/4] bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] rounded-md flex items-center justify-center">
                   <div className="text-center text-white p-8">
                     <div className="text-6xl mb-4">⚖️</div>
