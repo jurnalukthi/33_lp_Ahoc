@@ -1,81 +1,56 @@
-import { Scale, Award, BookCheck } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 export function BookMockup() {
+  const basePath = process.env.NODE_ENV === "production" ? "/33_lp_Ahoc" : "";
+
   return (
-    <div className="relative flex justify-center items-center py-6">
+    <div className="relative flex flex-col justify-center items-center py-4 sm:py-6 group">
       {/* Background ambient lighting glow */}
-      <div className="absolute -inset-4 bg-gradient-to-r from-amber-500/20 via-blue-600/30 to-amber-500/10 rounded-3xl blur-2xl opacity-75"></div>
+      <div className="absolute -inset-8 bg-gradient-to-r from-amber-500/30 via-blue-500/40 to-amber-500/25 rounded-3xl blur-3xl opacity-75 group-hover:opacity-100 transition-opacity"></div>
 
       {/* 3D Book Container */}
-      <div className="relative z-10 w-[290px] sm:w-[320px] md:w-[350px] aspect-[1/1.42] rounded-r-2xl rounded-l-md bg-gradient-to-br from-[#0e2246] via-[#132c58] to-[#09152b] border-t border-r border-b border-amber-500/40 p-6 sm:p-7 flex flex-col justify-between book-shadow text-white relative overflow-hidden select-none">
+      <div className="relative z-10 flex items-center justify-center">
         
-        {/* Left Book Spine Effect Overlay */}
-        <div className="absolute inset-y-0 left-0 w-8 book-spine-effect pointer-events-none"></div>
-
-        {/* Realistic Book Bookmark Ribbon (Red/Burgundy) */}
-        <div className="absolute -top-1 right-8 w-5 h-12 bg-red-700 shadow-md flex flex-col justify-end items-center z-20">
-          <div className="w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-b-[8px] border-b-[#0e2246]"></div>
-        </div>
-
-        {/* Top Header Badge on Book Cover */}
-        <div className="relative z-10 text-center pt-2">
-          <div className="inline-flex items-center gap-1.5 bg-amber-500/15 border border-amber-400/50 text-amber-300 text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-3">
-            <Award className="w-3 h-3 text-amber-400" />
-            <span>Referensi Komprehensif 2026</span>
-          </div>
+        {/* Book Hardcover & Realistic Page Edge Container */}
+        <div className="relative flex items-stretch">
           
-          <div className="h-px w-24 mx-auto bg-gradient-to-r from-transparent via-amber-400/60 to-transparent mb-3"></div>
+          {/* Main Book Cover */}
+          <div className="relative w-[280px] sm:w-[330px] md:w-[380px] aspect-[1/1.414] rounded-r-xl rounded-l-sm overflow-hidden shadow-2xl book-shadow border-t border-r border-b border-amber-400/50 bg-slate-950 transition-transform duration-300 group-hover:scale-[1.015]">
+            
+            <picture>
+              <source srcSet={`${basePath}/cover.webp`} type="image/webp" />
+              <img
+                src={`${basePath}/cover.png`}
+                alt="Cover Buku 300 Soal Jawab Hukum Pidana Korupsi 2026"
+                className="w-full h-full object-cover object-center block select-none"
+                loading="eager"
+                width={1055}
+                height={1491}
+              />
+            </picture>
 
-          {/* Book Title */}
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-serif-title leading-tight drop-shadow-sm">
-            300 SOAL JAWAB
-          </h2>
-          <div className="text-sm sm:text-base font-serif-title font-bold text-amber-400 mt-1 tracking-wide uppercase">
-            Hukum Pidana Korupsi
+            {/* Left Spine Texture Overlay */}
+            <div className="absolute inset-y-0 left-0 w-8 sm:w-10 book-spine-effect pointer-events-none z-20"></div>
+
+            {/* Subtle Gloss Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/10 pointer-events-none z-10"></div>
           </div>
-          <div className="text-[11px] font-sans font-semibold text-amber-200/90 tracking-widest mt-0.5">
-            UPDATE KUHP NASIONAL 2026
-          </div>
+
+          {/* Realistic Book Pages Edge (Right Thickness) */}
+          <div 
+            className="w-3.5 sm:w-4 my-1 rounded-r-sm bg-gradient-to-r from-slate-400 via-slate-100 to-slate-300 border-t border-r border-b border-slate-400/80 shadow-lg -ml-[2px] pointer-events-none z-0 opacity-95"
+            style={{
+              backgroundImage: "repeating-linear-gradient(0deg, #cbd5e1 0px, #cbd5e1 2px, #f1f5f9 2px, #f1f5f9 4px)"
+            }}
+          ></div>
         </div>
 
-        {/* Center Emblem (Gold Scales of Justice) */}
-        <div className="relative z-10 my-auto py-3 flex flex-col items-center justify-center">
-          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-amber-500/20 to-amber-700/10 border-2 border-amber-400/60 flex items-center justify-center shadow-inner shadow-amber-900/40">
-            <Scale className="w-9 h-9 sm:w-11 sm:h-11 text-amber-400" />
-          </div>
-          <div className="text-center mt-3 max-w-[240px]">
-            <p className="text-[11px] sm:text-xs text-slate-300 font-medium leading-tight">
-              Panduan Praktis & Uji Kompetensi
-            </p>
-            <p className="text-[10px] text-amber-300/80 font-medium mt-0.5">
-              Mahasiswa • Advokat • Calon Hakim Ad Hoc
-            </p>
-          </div>
-        </div>
+      </div>
 
-        {/* Bottom Feature Badges on Cover */}
-        <div className="relative z-10 border-t border-slate-700/60 pt-3">
-          <div className="grid grid-cols-3 gap-1.5 text-center text-[9px] sm:text-[10px] text-slate-300">
-            <div className="bg-slate-900/60 border border-slate-700/50 rounded py-1 px-1">
-              <span className="font-bold text-amber-400 block">18 BAB</span>
-              Materi Lengkap
-            </div>
-            <div className="bg-slate-900/60 border border-slate-700/50 rounded py-1 px-1">
-              <span className="font-bold text-amber-400 block">20 Diagram</span>
-              Alur Logika
-            </div>
-            <div className="bg-slate-900/60 border border-slate-700/50 rounded py-1 px-1">
-              <span className="font-bold text-amber-400 block">IRAC</span>
-              Metode Ujian
-            </div>
-          </div>
-          <div className="mt-2 text-center text-[9px] text-slate-400 tracking-wider font-medium">
-            TIM PENYUSUN • EDISI REVISI 2026
-          </div>
-        </div>
-
-        {/* Gold Border Trims */}
-        <div className="absolute inset-2 border border-amber-400/20 rounded-r-xl rounded-l pointer-events-none"></div>
+      {/* Floating Specs Pill Badge below the book */}
+      <div className="relative z-10 mt-6 inline-flex items-center gap-2 bg-slate-900/90 border border-amber-400/60 text-slate-200 text-xs font-semibold px-4 py-1.5 rounded-full shadow-xl backdrop-blur-md">
+        <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+        <span>Edisi Master A5 • 18 BAB Lengkap • 400+ Halaman</span>
       </div>
     </div>
   );
