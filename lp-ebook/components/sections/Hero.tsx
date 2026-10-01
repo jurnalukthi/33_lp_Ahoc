@@ -51,7 +51,7 @@ export function Hero() {
             </div>
           </div>
           
-          <div className="flex justify-center lg:justify-end">
+          <div className="hidden md:flex justify-center lg:justify-end">
             <div className="relative">
               <div className="absolute inset-0 bg-[var(--color-primary)] opacity-10 blur-3xl rounded-full"></div>
               <div className="relative bg-white rounded-lg shadow-2xl p-8 max-w-md">
