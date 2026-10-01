@@ -153,3 +153,4 @@ Design system lengkap ada di `design-system/ebook-hukum-pidana-korupsi/MASTER.md
 ## Contact
 
 Untuk update atau pertanyaan, hubungi Tim Penyusun.
+# Landing Page Ebook
