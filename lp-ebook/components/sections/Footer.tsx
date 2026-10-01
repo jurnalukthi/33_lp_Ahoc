@@ -1,42 +1,92 @@
+import { Scale, ShieldCheck } from "lucide-react";
+
 export function Footer() {
-  const currentYear = new Date().getFullYear()
-  
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="bg-[var(--color-foreground)] text-white py-12">
-      <div className="container mx-auto px-4 max-w-7xl">
-        <div className="grid md:grid-cols-3 gap-8 mb-8">
-          <div>
-            <h3 className="font-bold text-xl mb-4">300 Soal Jawab Hukum Pidana Korupsi 2026</h3>
-            <p className="text-sm opacity-80">
-              Referensi komprehensif untuk mahasiswa, advokat, dan calon hakim ad hoc Pengadilan Tindak Pidana Korupsi.
+    <footer className="bg-[#070e1c] text-slate-400 py-12 border-t border-slate-800 text-xs">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div className="grid md:grid-cols-4 gap-8 mb-10">
+          
+          {/* Col 1: Brand & Synopsis */}
+          <div className="md:col-span-2 space-y-3">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-amber-500 flex items-center justify-center text-slate-950">
+                <Scale className="w-4 h-4" />
+              </div>
+              <span className="text-white font-bold font-serif-title text-base tracking-wide">
+                TIPIKOR 2026 • REFERENSI HUKUM
+              </span>
+            </div>
+            <p className="text-xs text-slate-400 leading-relaxed max-w-md">
+              Karya referensi komprehensif memuat 300 soal jawab, analisis pemetaan pasal KUHP Nasional (UU No. 1/2023), 20 diagram alur pembuktian, dan kerangka analisis IRAC untuk persiapan ujian serta praktik peradilan.
             </p>
           </div>
-          
-          <div>
-            <h4 className="font-semibold mb-4">Tentang Buku</h4>
-            <ul className="space-y-2 text-sm opacity-80">
-              <li>18 BAB Lengkap</li>
-              <li>300 Soal Jawab Tervalidasi</li>
-              <li>Update KUHP Nasional 2026</li>
-              <li>Format: A5, 400+ halaman</li>
+
+          {/* Col 2: Spesifikasi Buku */}
+          <div className="space-y-2">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200">
+              Spesifikasi Karya
+            </h4>
+            <ul className="space-y-1.5 text-xs text-slate-400">
+              <li>• Format: A5 Digital / PDF</li>
+              <li>• Jumlah: 18 BAB Lengkap</li>
+              <li>• Muatan: 300 Soal Jawab & Pembahasan</li>
+              <li>• Tambahan: 20 Diagram & 50 Rujukan Silang</li>
+              <li>• Edisi: Transisi KUHP Nasional 2026</li>
             </ul>
           </div>
-          
-          <div>
-            <h4 className="font-semibold mb-4">Informasi</h4>
-            <ul className="space-y-2 text-sm opacity-80">
-              <li>Kebijakan Privasi</li>
-              <li>Syarat & Ketentuan</li>
-              <li>Panduan Pembelian</li>
-              <li>Kontak</li>
+
+          {/* Col 3: Navigasi & Bantuan */}
+          <div className="space-y-2">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-200">
+              Informasi & Tautan
+            </h4>
+            <ul className="space-y-1.5 text-xs text-slate-400">
+              <li>
+                <a href="#keunggulan" className="hover:text-amber-400 transition-colors">
+                  Keunggulan Buku
+                </a>
+              </li>
+              <li>
+                <a href="#daftar-isi" className="hover:text-amber-400 transition-colors">
+                  Daftar Isi 18 BAB
+                </a>
+              </li>
+              <li>
+                <a href="#strategi-ujian" className="hover:text-amber-400 transition-colors">
+                  Metode IRAC & Ujian
+                </a>
+              </li>
+              <li>
+                <a href="#harga" className="hover:text-amber-400 transition-colors">
+                  Pilihan Paket & Pembelian
+                </a>
+              </li>
+              <li>
+                <a href="#faq" className="hover:text-amber-400 transition-colors">
+                  Pusat Bantuan & FAQ
+                </a>
+              </li>
             </ul>
           </div>
+
         </div>
-        
-        <div className="border-t border-white/20 pt-8 text-center text-sm opacity-70">
-          <p>&copy; {currentYear} Tim Penyusun. Semua hak cipta dilindungi undang-undang.</p>
+
+        {/* Bottom Bar */}
+        <div className="pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left text-[11px] text-slate-500">
+          <div>
+            &copy; {currentYear} Tim Penyusun. Hak Cipta Dilindungi Undang-Undang.
+          </div>
+          <div className="flex items-center gap-4">
+            <span>Transaksi Resmi via Platform Lynk</span>
+            <span>•</span>
+            <span>Privasi & Keamanan Terjamin</span>
+          </div>
         </div>
+
       </div>
     </footer>
-  )
+  );
 }
