@@ -39,7 +39,7 @@ export const pricingPackages: PricingPackage[] = [
     ],
     ctaText: "Mulai Baca Online",
     ctaSubtext: "Akses instan di browser melalui platform Lynk",
-    ctaUrl: "https://lynk.id/" // Update with actual Lynk URL
+    ctaUrl: "https://lynk.id/jurnalukhti/gy6gl1l7lwx4"
   },
   {
     id: "pdf",
@@ -64,7 +64,7 @@ export const pricingPackages: PricingPackage[] = [
     ],
     ctaText: "Download Ebook PDF Sekarang",
     ctaSubtext: "Dapatkan file PDF permanen langsung ke email Anda",
-    ctaUrl: "https://lynk.id/" // Update with actual Lynk URL
+    ctaUrl: "https://lynk.id/jurnalukhti/3o7z58k79wpv"
   }
 ];
 
