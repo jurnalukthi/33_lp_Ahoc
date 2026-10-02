@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """
 Campaign Generator: Ebook 300 Soal Jawab Hukum Pidana Korupsi 2026
-Updated: Vertically centered content (rata tengah atas-bawah) for both Carousel and Reels.
+Updated with AI-generated background images (from temp_frames/):
+- Reels 1: bg_reels.jpeg
+- Reels 2: bg_test.jpeg
+- Carousel: bg_carousel.jpeg
+All text and cards vertically centered with crisp contrast overlay.
 """
 
 import os
@@ -10,7 +14,7 @@ import time
 import struct
 import subprocess
 from pathlib import Path
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 # Load .env
 env_path = Path(__file__).parent / ".env"
@@ -26,19 +30,21 @@ from google.genai import types
 
 GEMINI_API_KEYS = [k.strip() for k in os.environ.get("GEMINI_API_KEYS", "").split(",") if k.strip()]
 BASE_DIR = Path(__file__).parent.resolve()
+TEMP_DIR = BASE_DIR / "temp_frames"
+TEMP_DIR.mkdir(parents=True, exist_ok=True)
 OUTPUT_DIR = BASE_DIR / "output"
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 COVER_PATH = BASE_DIR.parent / "lp-ebook" / "public" / "cover.png"
 
 # Color Palette
-NAVY_DARK = (10, 18, 38)      # #0A1226
-NAVY_BG_BOTTOM = (15, 28, 60) # #0F1C3C
+NAVY_DARK = (8, 14, 30)       # #080E1E
+NAVY_BG_BOTTOM = (14, 24, 52) # #0E1834
 NAVY_PRIMARY = (30, 58, 138)  # #1E3A8A
 GOLD_ACCENT = (217, 119, 6)   # #D97706
 GOLD_LIGHT = (251, 191, 36)   # #FBBF24
 TEXT_WHITE = (255, 255, 255)
-TEXT_MUTED = (203, 213, 225)  # #CBD5E1
-CARD_BG = (22, 36, 70)
+TEXT_MUTED = (215, 225, 235)  # #D7E1EB
+CARD_BG = (16, 28, 58, 230)   # Semi-translucent dark navy card
 BORDER_GOLD = (180, 83, 9)
 
 # Fonts
@@ -100,7 +106,6 @@ def convert_to_wav(audio_data: bytes, mime_type: str) -> bytes:
     return header + audio_data
 
 def generate_voiceover(text: str, output_path: str, voice_name: str = "Puck") -> str:
-    # If audio already exists and is non-empty, reuse it to save API rate limits
     if os.path.exists(output_path) and os.path.getsize(output_path) > 1000:
         print(f"[TTS] Using cached voiceover: {output_path}")
         return output_path
@@ -180,6 +185,34 @@ def create_gradient_bg(width: int, height: int, color_top, color_bottom):
         draw.line([(0, y), (width, y)], fill=(r, g, b, 255))
     return base
 
+def load_ai_background(width: int, height: int, preferred_filename: str = None) -> Image.Image:
+    """Loads background image from temp_frames, crops/fits and applies dark navy overlay for contrast."""
+    candidate_paths = []
+    if preferred_filename:
+        candidate_paths.append(TEMP_DIR / preferred_filename)
+        candidate_paths.append(TEMP_DIR / f"{preferred_filename}.jpeg")
+        candidate_paths.append(TEMP_DIR / f"{preferred_filename}.jpg")
+        candidate_paths.append(TEMP_DIR / f"{preferred_filename}.png")
+
+    target_path = None
+    for p in candidate_paths:
+        if p.exists():
+            target_path = p
+            break
+
+    if target_path and target_path.exists():
+        try:
+            raw_img = Image.open(target_path).convert("RGBA")
+            fitted = ImageOps.fit(raw_img, (width, height), method=Image.Resampling.LANCZOS)
+            # High-opacity navy tint overlay (200/255) for crisp typography readability
+            overlay = Image.new("RGBA", (width, height), (8, 14, 32, 205))
+            blended = Image.alpha_composite(fitted, overlay)
+            return blended
+        except Exception as e:
+            print(f"[Warning] Failed loading bg {target_path}: {e}")
+
+    return create_gradient_bg(width, height, NAVY_DARK, NAVY_BG_BOTTOM)
+
 def draw_rounded_card(draw, box, radius, fill_color, outline_color=None, outline_width=2):
     draw.rounded_rectangle(box, radius=radius, fill=fill_color, outline=outline_color, width=outline_width)
 
@@ -211,10 +244,11 @@ def render_reels_slide(
     bullets: list,
     highlight: str,
     show_book: bool = False,
-    cta_button: str = None
+    cta_button: str = None,
+    bg_image_name: str = "bg_reels.jpeg"
 ) -> Image.Image:
     width, height = 1080, 1920
-    img = create_gradient_bg(width, height, NAVY_DARK, NAVY_BG_BOTTOM)
+    img = load_ai_background(width, height, bg_image_name)
     draw = ImageDraw.Draw(img)
 
     # 1. Fixed Header at Top
@@ -222,7 +256,7 @@ def render_reels_slide(
     font_brand = get_font(FONT_SANS_BOLD, 30)
     brand_text = "REFERENSI HUKUM TIPIKOR 2026"
     draw.text((width // 2, 80), brand_text, fill=GOLD_LIGHT, font=font_brand, anchor="mm")
-    draw.line([(80, 120), (width - 80, 120)], fill=(40, 60, 100), width=2)
+    draw.line([(80, 120), (width - 80, 120)], fill=(60, 80, 130), width=2)
 
     # 2. Prepare items & calculate total content height for vertical centering
     content_items = []
@@ -281,7 +315,6 @@ def render_reels_slide(
         total_content_height += btn_h
 
     # 3. Compute Centered Vertical Start Position
-    # Available canvas area: from y=150 to y=1850 (height = 1700)
     top_limit = 150
     bottom_limit = 1850
     avail_h = bottom_limit - top_limit
@@ -321,7 +354,7 @@ def render_reels_slide(
                 (width + target_w) // 2 + 12,
                 cur_y + target_h + 24
             ]
-            draw_rounded_card(draw, shadow_box, 16, fill_color=(0, 0, 0, 160))
+            draw_rounded_card(draw, shadow_box, 16, fill_color=(0, 0, 0, 180))
             img.paste(cover_resized, ((width - target_w) // 2, cur_y), cover_resized)
             cur_y += target_h + item["margin_bottom"]
 
@@ -357,7 +390,7 @@ def render_reels_slide(
 
         elif itype == "highlight":
             hl_box = [70, cur_y, width - 70, cur_y + item["h"]]
-            draw_rounded_card(draw, hl_box, 20, fill_color=(45, 25, 12), outline_color=GOLD_ACCENT, outline_width=2)
+            draw_rounded_card(draw, hl_box, 20, fill_color=(45, 25, 12, 230), outline_color=GOLD_ACCENT, outline_width=2)
             font_hl = get_font(FONT_SANS_BOLD, 34)
             draw.text((width // 2, cur_y + item["h"] // 2), item["text"], fill=GOLD_LIGHT, font=font_hl, anchor="mm")
             cur_y += item["h"] + item["margin_bottom"]
@@ -371,14 +404,11 @@ def render_reels_slide(
 
     return img
 
-def render_reels_video(scenes_data: list, audio_path: str, output_video: str):
-    temp_dir = BASE_DIR / "temp_frames"
-    temp_dir.mkdir(exist_ok=True)
-
+def render_reels_video(scenes_data: list, audio_path: str, output_video: str, bg_image_name: str = "bg_reels.jpeg"):
     total_duration = get_audio_duration(audio_path)
     dur_per_scene = total_duration / len(scenes_data)
 
-    images_txt = temp_dir / "images.txt"
+    images_txt = TEMP_DIR / f"images_{Path(output_video).stem}.txt"
     frame_paths = []
 
     for idx, scene in enumerate(scenes_data):
@@ -389,9 +419,10 @@ def render_reels_video(scenes_data: list, audio_path: str, output_video: str):
             bullets=scene.get("bullets", []),
             highlight=scene.get("highlight", ""),
             show_book=scene.get("show_book", False),
-            cta_button=scene.get("cta_button", None)
+            cta_button=scene.get("cta_button", None),
+            bg_image_name=bg_image_name
         )
-        frame_path = temp_dir / f"scene_{idx:02d}.png"
+        frame_path = TEMP_DIR / f"scene_{Path(output_video).stem}_{idx:02d}.png"
         slide_img.save(frame_path, "PNG")
         frame_paths.append(frame_path)
 
@@ -421,7 +452,7 @@ def render_reels_video(scenes_data: list, audio_path: str, output_video: str):
     subprocess.run(cmd, check=True)
     print(f"[FFmpeg] Video successfully rendered: {output_video}")
 
-    # Cleanup temp frames
+    # Cleanup only temporary frames and images.txt, keeping bg files safe
     for fp in frame_paths:
         if fp.exists():
             fp.unlink()
@@ -431,12 +462,12 @@ def render_reels_video(scenes_data: list, audio_path: str, output_video: str):
 # -------------------------------------------------------------
 # VERTICALLY CENTERED CAROUSEL SLIDE RENDERER (1080x1350)
 # -------------------------------------------------------------
-def generate_carousel_slides(carousel_data: list, output_folder: Path):
+def generate_carousel_slides(carousel_data: list, output_folder: Path, bg_image_name: str = "bg_carousel.jpeg"):
     output_folder.mkdir(parents=True, exist_ok=True)
     width, height = 1080, 1350  # 4:5 Instagram Portrait
 
     for idx, slide in enumerate(carousel_data, start=1):
-        img = create_gradient_bg(width, height, NAVY_DARK, NAVY_BG_BOTTOM)
+        img = load_ai_background(width, height, bg_image_name)
         draw = ImageDraw.Draw(img)
 
         # 1. Top Decorative line & Header
@@ -445,7 +476,7 @@ def generate_carousel_slides(carousel_data: list, output_folder: Path):
         font_num = get_font(FONT_SANS_BOLD, 28)
         draw.text((60, 60), "REFERENSI KUHP NASIONAL 2026", fill=GOLD_LIGHT, font=font_cat, anchor="lt")
         draw.text((width - 60, 60), f"{idx}/{len(carousel_data)}", fill=GOLD_LIGHT, font=font_num, anchor="rt")
-        draw.line([(60, 105), (width - 60, 105)], fill=(40, 60, 100), width=2)
+        draw.line([(60, 105), (width - 60, 105)], fill=(60, 80, 130), width=2)
 
         # 2. Measure all middle content elements
         content_items = []
@@ -538,11 +569,11 @@ def generate_carousel_slides(carousel_data: list, output_folder: Path):
 
         out_path = output_folder / f"carousel_slide_{idx:02d}.png"
         img.save(out_path, "PNG")
-        print(f"[Carousel] Saved centered slide: {out_path}")
+        print(f"[Carousel] Saved centered slide with AI background: {out_path}")
 
 def main():
     print("=" * 60)
-    print("RE-GENERATING CAMPAIGN: PERFECT VERTICAL CENTERING")
+    print("CAMPAIGN GENERATOR WITH AI BACKGROUNDS & VERTICAL CENTERING")
     print("=" * 60)
 
     # 1. REELS 1: "Transisi KUHP 2026 & Ancaman Delik Korupsi"
@@ -590,7 +621,7 @@ def main():
     video_path_1 = str(OUTPUT_DIR / "reels_1_transisi_kuhp.mp4")
 
     generate_voiceover(vo_text_1, audio_path_1, voice_name="Puck")
-    render_reels_video(scenes_1, audio_path_1, video_path_1)
+    render_reels_video(scenes_1, audio_path_1, video_path_1, bg_image_name="bg_reels.jpeg")
 
     # 2. REELS 2: "Persiapan Seleksi Hakim Ad Hoc & UPA"
     vo_text_2 = (
@@ -637,9 +668,10 @@ def main():
     video_path_2 = str(OUTPUT_DIR / "reels_2_persiapan_ujian.mp4")
 
     generate_voiceover(vo_text_2, audio_path_2, voice_name="Leda")
-    render_reels_video(scenes_2, audio_path_2, video_path_2)
+    # Reels 2 uses bg_test.jpeg if present
+    render_reels_video(scenes_2, audio_path_2, video_path_2, bg_image_name="bg_test.jpeg")
 
-    # 3. INSTAGRAM CAROUSEL SLIDES (5 Slides)
+    # 3. INSTAGRAM CAROUSEL SLIDES (5 Slides) with bg_carousel.jpeg
     carousel_data = [
         {
             "title": "5 Perubahan Delik Korupsi di KUHP Nasional 2026",
@@ -668,9 +700,9 @@ def main():
         }
     ]
 
-    generate_carousel_slides(carousel_data, OUTPUT_DIR / "carousel_post")
+    generate_carousel_slides(carousel_data, OUTPUT_DIR / "carousel_post", bg_image_name="bg_carousel.jpeg")
 
-    print("\n✅ PEMBARUAN SELESAI: SEMUA SLIDE & VIDEO SUDAH RATA TENGAH ATAS-BAWAH!")
+    print("\n✅ PEMBARUAN SELESAI: SEMUA VIDEO & SLIDE MENGGUNAKAN BACKGROUND AI DENGAN POSISI TENGAH!")
 
 if __name__ == "__main__":
     main()

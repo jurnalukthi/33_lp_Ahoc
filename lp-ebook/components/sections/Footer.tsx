@@ -69,6 +69,11 @@ export function Footer() {
                   Pusat Bantuan & FAQ
                 </a>
               </li>
+              <li>
+                <a href="/transaksi" className="text-amber-400/90 hover:text-amber-300 font-semibold transition-colors">
+                  Hak Akses & Transaksi Terbaru
+                </a>
+              </li>
             </ul>
           </div>
 
