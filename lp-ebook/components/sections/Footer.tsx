@@ -1,4 +1,4 @@
-import { Scale, ShieldCheck } from "lucide-react";
+import { Scale } from "lucide-react";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -79,10 +79,20 @@ export function Footer() {
           <div>
             &copy; {currentYear} Tim Penyusun. Hak Cipta Dilindungi Undang-Undang.
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-end">
             <span>Transaksi Resmi via Platform Lynk</span>
             <span>•</span>
             <span>Privasi & Keamanan Terjamin</span>
+            <span>•</span>
+            <span className="inline-flex items-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fjurnalukthi%2F33_lp_Ahoc&count_bg=%23B45309&title_bg=%231E3A8A&icon=&extra_info=&title=Pengunjung"
+                alt="Pengunjung"
+                className="h-4 rounded"
+                loading="lazy"
+              />
+            </span>
           </div>
         </div>
 
