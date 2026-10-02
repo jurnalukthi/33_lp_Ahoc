@@ -87,7 +87,7 @@ export function Footer() {
             <span className="inline-flex items-center">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fjurnalukthi%2F33_lp_Ahoc&count_bg=%23B45309&title_bg=%231E3A8A&icon=&extra_info=&title=Pengunjung"
+                src="https://visitor-badge.laobi.icu/badge?page_id=jurnalukthi.33_lp_Ahoc&left_color=%231E3A8A&right_color=%23B45309&left_text=Pengunjung"
                 alt="Pengunjung"
                 className="h-4 rounded"
                 loading="lazy"
