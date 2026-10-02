@@ -1,5 +1,9 @@
 # AGENTS.md
 
+## Batasan Ruang Kerja (Workspace Boundary)
+- **ATURAN MUTLAK**: Dilarang keras memodifikasi, menambah, atau menghapus file apa pun yang berada di luar root folder proyek ini (`/mnt/DATASOURCES/My Projects/Projects2026/33_lp_Ahoc`).
+- Semua operasi baca, tulis, edit, dan eksekusi skrip wajib dibatasi hanya di dalam repositori ini.
+
 ## Ringkasan Proyek
 Landing page penjualan ebook *300 Soal Jawab Hukum Pidana Korupsi 2026: Referensi Mahasiswa, Advokat & Calon Hakim Ad Hoc*.
 
