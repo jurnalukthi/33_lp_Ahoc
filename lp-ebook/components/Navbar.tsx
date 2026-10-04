@@ -1,11 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Scale, BookOpen, Menu, X, ArrowRight } from "lucide-react";
+import { Scale, BookOpen, Menu, X, ArrowRight, FileDown } from "lucide-react";
+import { getBasePath } from "@/lib/config";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const basePath = getBasePath();
+  const samplePdfUrl = `${basePath}/sampel_main.pdf`;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -71,10 +74,19 @@ export function Navbar() {
           <a href="#harga" className="hover:text-amber-400 transition-colors">
             Paket & Harga
           </a>
-          <a href="#faq" className="hover:text-amber-400 transition-colors">
-            FAQ
-          </a>
-        </nav>
+           <a href="#faq" className="hover:text-amber-400 transition-colors">
+             FAQ
+           </a>
+           <a
+             href={samplePdfUrl}
+             target="_blank"
+             rel="noopener noreferrer"
+             className="inline-flex items-center gap-1.5 text-amber-400 hover:text-amber-300 transition-colors font-semibold"
+           >
+             <FileDown className="w-4 h-4" />
+             <span>Download Sampel</span>
+           </a>
+         </nav>
 
         {/* Action Button */}
         <div className="hidden sm:flex items-center gap-3">
@@ -140,14 +152,24 @@ export function Navbar() {
           >
             Pilihan Paket & Harga
           </a>
-          <a
-            href="#faq"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-slate-200 hover:text-amber-400 font-medium text-sm"
-          >
-            Pertanyaan Umum (FAQ)
-          </a>
-          <div className="pt-2">
+           <a
+             href="#faq"
+             onClick={() => setMobileMenuOpen(false)}
+             className="block py-2 text-slate-200 hover:text-amber-400 font-medium text-sm"
+           >
+             Pertanyaan Umum (FAQ)
+           </a>
+           <a
+             href={samplePdfUrl}
+             target="_blank"
+             rel="noopener noreferrer"
+             onClick={() => setMobileMenuOpen(false)}
+             className="flex items-center gap-2 py-2 text-amber-400 hover:text-amber-300 font-semibold text-sm"
+           >
+             <FileDown className="w-4 h-4" />
+             <span>Download Sampel Gratis</span>
+           </a>
+           <div className="pt-2">
             <a
               href="#harga"
               onClick={() => setMobileMenuOpen(false)}

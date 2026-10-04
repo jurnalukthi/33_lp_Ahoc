@@ -1,6 +1,12 @@
+"use client";
+
 import { FileDown, BookMarked } from "lucide-react";
+import { getBasePath } from "@/lib/config";
 
 export function SampleChapter() {
+  const basePath = getBasePath();
+  const pdfUrl = `${basePath}/sampel_main.pdf`;
+
   return (
     <section id="sampel-bab" className="py-16 md:py-24 bg-white border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -42,7 +48,7 @@ export function SampleChapter() {
                 
                 {/* Button */}
                 <a
-                  href="/sampel_main.pdf"
+                  href={pdfUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-blue-900 text-white font-bold text-sm rounded-lg hover:bg-blue-800 transition-colors shadow-md hover:shadow-lg"
