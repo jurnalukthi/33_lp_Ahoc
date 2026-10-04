@@ -3,6 +3,7 @@ import { Hero } from "@/components/sections/Hero";
 import { ProblemStatement } from "@/components/sections/ProblemStatement";
 import { Features } from "@/components/sections/Features";
 import { TableOfContents } from "@/components/sections/TableOfContents";
+import { SampleChapter } from "@/components/sections/SampleChapter";
 import { ExamStrategy } from "@/components/sections/ExamStrategy";
 import { TargetAudience } from "@/components/sections/TargetAudience";
 import { WhatYouGet } from "@/components/sections/WhatYouGet";
@@ -20,6 +21,7 @@ export default function Home() {
         <ProblemStatement />
         <Features />
         <TableOfContents />
+        <SampleChapter />
         <ExamStrategy />
         <TargetAudience />
         <WhatYouGet />
